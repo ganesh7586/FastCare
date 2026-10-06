@@ -94,6 +94,18 @@ const Login = () => {
             <>New to FastCare? <span onClick={() => setState('Sign Up')} className='text-primary font-medium hover:underline cursor-pointer'>Create an account</span></>
           )}
         </p>
+
+        <div className='mt-6 pt-5 border-t border-gray-100 text-center'>
+          <a
+            href={import.meta.env.VITE_ADMIN_URL || 'https://fast-care-4ihm.vercel.app'}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-primary transition-colors py-1.5 px-3 rounded-lg hover:bg-gray-50'
+          >
+            <span>🛡️ Doctor / Admin Login</span>
+            <span className='text-[10px]'>↗</span>
+          </a>
+        </div>
       </div>
     </div>
   )
