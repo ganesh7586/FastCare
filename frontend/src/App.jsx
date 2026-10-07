@@ -10,7 +10,7 @@ import Appointment from './pages/Appointment.jsx'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import { ToastContainer } from 'react-toastify'; 
-import Chat from './pages/chat.jsx'
+import Chat from './pages/Chat.jsx'
 
 const App = () => {
   return (
