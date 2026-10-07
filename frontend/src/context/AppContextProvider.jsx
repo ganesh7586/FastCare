@@ -5,7 +5,7 @@ import { AppContext } from './AppContext';
 
 const AppContextProvider = (props) => {
   const currencySymbol = '$';
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://fastcare-4mrd.onrender.com';
   const [doctors, setDoctors] = useState([]);
   const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '');
   const [userData,setUserData] = useState(false);

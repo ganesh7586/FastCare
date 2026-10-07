@@ -12,7 +12,7 @@ const DoctorContextProvider = (props) => {
     const [dashData, setDashData] = useState(false);
     const [profileData, setProfileData] = useState(false);
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://fastcare-4mrd.onrender.com';
 
     const getAppointments = async () => {
         try {
