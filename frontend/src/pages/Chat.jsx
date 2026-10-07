@@ -27,17 +27,35 @@ const Chat = () => {
         }
     }, [token, navigate]);
 
-    // Setup Socket.IO connection
+    const selectedChatRef = useRef(null);
+    useEffect(() => {
+        selectedChatRef.current = selectedChat;
+        if (socketRef.current && selectedChat?._id) {
+            socketRef.current.emit('join_room', selectedChat._id);
+        }
+    }, [selectedChat]);
+
+    // Setup Socket.IO connection (runs once when userData is ready)
     useEffect(() => {
         if (!userData?._id) return;
 
-        socketRef.current = io(backendUrl, {
-            query: { userId: userData._id }
+        const socket = io(backendUrl, {
+            query: { userId: userData._id },
+            transports: ['websocket', 'polling']
+        });
+        socketRef.current = socket;
+
+        socket.on('connect', () => {
+            if (selectedChatRef.current?._id) {
+                socket.emit('join_room', selectedChatRef.current._id);
+            }
         });
 
-        socketRef.current.on('receive_message', (newMsg) => {
+        socket.on('receive_message', (newMsg) => {
             setMessages((prev) => {
-                if (selectedChat && newMsg.conversationId === selectedChat._id) {
+                if (selectedChatRef.current && newMsg.conversationId === selectedChatRef.current._id) {
+                    const alreadyExists = prev.some(m => m._id === newMsg._id);
+                    if (alreadyExists) return prev;
                     return [...prev, newMsg];
                 }
                 return prev;
@@ -45,14 +63,14 @@ const Chat = () => {
             fetchConversations();
         });
 
-        socketRef.current.on('new_message_notification', () => {
+        socket.on('new_message_notification', () => {
             fetchConversations();
         });
 
         return () => {
-            if (socketRef.current) socketRef.current.disconnect();
+            socket.disconnect();
         };
-    }, [userData?._id, selectedChat]);
+    }, [userData?._id, backendUrl]);
 
     // Fetch user conversations
     const fetchConversations = async () => {

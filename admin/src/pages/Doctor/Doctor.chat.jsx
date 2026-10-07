@@ -22,29 +22,51 @@ const DoctorChat = () =>{
         }
     }, [dToken, profileData]);
 
-     useEffect(() => {
+    const selectedChatRef = useRef(null);
+    useEffect(() => {
+        selectedChatRef.current = selectedChat;
+        if (socketRef.current && selectedChat?._id) {
+            socketRef.current.emit('join_room', selectedChat._id);
+        }
+    }, [selectedChat]);
+
+    useEffect(() => {
         if (!profileData?._id) return;
-        socketRef.current = io(backendUrl, {
-            query: { userId: profileData._id }
+        
+        const socket = io(backendUrl, {
+            query: { userId: profileData._id },
+            transports: ['websocket', 'polling']
         });
+        socketRef.current = socket;
+
+        socket.on('connect', () => {
+            if (selectedChatRef.current?._id) {
+                socket.emit('join_room', selectedChatRef.current._id);
+            }
+        });
+
         // Listen for incoming messages
-        socketRef.current.on('receive_message', (newMsg) => {
+        socket.on('receive_message', (newMsg) => {
             setMessages((prev) => {
-                if (selectedChat && newMsg.conversationId === selectedChat._id) {
+                if (selectedChatRef.current && newMsg.conversationId === selectedChatRef.current._id) {
+                    const alreadyExists = prev.some(m => m._id === newMsg._id);
+                    if (alreadyExists) return prev;
                     return [...prev, newMsg];
                 }
                 return prev;
             });
             fetchConversations();
         });
+
         // Refresh inbox list on notification
-        socketRef.current.on('new_message_notification', () => {
+        socket.on('new_message_notification', () => {
             fetchConversations();
         });
+
         return () => {
-            if (socketRef.current) socketRef.current.disconnect();
+            socket.disconnect();
         };
-    }, [profileData?._id, selectedChat]);
+    }, [profileData?._id, backendUrl]);
 
 const fetchConversations = async () => {
         if (!dToken) return;
