@@ -18,15 +18,6 @@ const Chat = () => {
     const [loadingMessages, setLoadingMessages] = useState(false);
 
     const socketRef = useRef(null);
-    const messagesEndRef = useRef(null);
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
 
     // Redirect to login if user is not authenticated
     useEffect(() => {
@@ -271,7 +262,6 @@ const Chat = () => {
                                     );
                                 })
                             )}
-                            <div ref={messagesEndRef} />
                         </div>
 
                         {/* Input Box */}

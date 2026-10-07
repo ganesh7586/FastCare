@@ -15,15 +15,6 @@ const DoctorChat = () =>{
     const [loadingMessages, setLoadingMessages] = useState(false);
 
     const socketRef = useRef(null);
-    const messagesEndRef = useRef(null);
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    useEffect(()=>{
-         scrollToBottom();
-    },[messages]);
 
     useEffect(() => {
         if (dToken && !profileData) {
@@ -239,7 +230,6 @@ useEffect(() => {
                                     );
                                 })
                             )}
-                            <div ref={messagesEndRef} />
                         </div>
                         {/* Message Input */}
                         <form onSubmit={handleSendMessage} className='p-3 bg-white border-t border-gray-200 flex gap-2 items-center'>
