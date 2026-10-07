@@ -14,6 +14,7 @@ import DoctorsList from './pages/Admin/DoctorsList';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorAppointments from './pages/Doctor/DoctorAppointments';
 import DoctorProfile from './pages/Doctor/DoctorProfile';
+import DoctorChat from './pages/Doctor/Doctor.chat';
 
 const App = () => {
 
@@ -38,6 +39,8 @@ const App = () => {
           <Route path='/doctor-dashboard' element={<DoctorDashboard />} />
           <Route path='/doctor-appointments' element={<DoctorAppointments />} />
           <Route path='/doctor-profile' element={<DoctorProfile />} />
+
+          <Route path='/doctor-chat' element={<DoctorChat/>} />
         </Routes>
       </div>
     </div>

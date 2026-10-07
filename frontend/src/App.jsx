@@ -10,6 +10,7 @@ import Appointment from './pages/Appointment.jsx'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import { ToastContainer } from 'react-toastify'; 
+import Chat from './pages/chat.jsx'
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path='/my-appointments' element={<MyAppoinment />} />
         <Route path='/my-appoinment' element={<MyAppoinment />} />
         <Route path='/appointment/:docId' element={<Appointment />} />
+        <Route path='/chat' element={<Chat/>} />
       </Routes>
       <Footer />
     </div>
